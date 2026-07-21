@@ -118,7 +118,7 @@ Class names are conventionally singular and PascalCase.
 
 Classes form a hierarchy. `City` can be a child of `Place`, which can be a child of
 `Thing`. A child class is a **subclass**: every `City` is automatically also a `Place`.
-This is the "is-a" relationship from OO inheritance, and as in some OO languages, a class
+This is the "is-a" relationship from OO inheritance — a child thus inherits all of its parent's properties, and as in some OO languages, a class
 can have more than one parent.
 
 Perseus displays this hierarchy in the left panel of the **Classes** tab, with an
