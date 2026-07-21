@@ -807,13 +807,13 @@ In Turtle, what you just built is:
 :Country       rdf:type       owl:Class ;
                rdfs:label     "Country"@en .
 
-:LOCATED_IN    rdfs:range     :City, :Person, :Country .
+:isLocatedIn    rdfs:range     :City, :Person, :Country .
 
 :Jane_Doe      rdf:type       :Person ;
-               :LOCATED_IN    :San_Francisco .
+               :isLocatedIn    :San_Francisco .
 
 :San_Francisco rdf:type       :City ;
-               :LOCATED_IN    :USA .
+               :isLocatedIn    :USA .
 
 :USA           rdf:type       :Country .
 ```
