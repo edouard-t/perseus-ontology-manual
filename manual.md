@@ -133,22 +133,20 @@ graph — the data extracted from your documents. An individual lives in the ont
 you put it there deliberately, for one of two reasons.
 
 **As an enumeration value.** When a property should only ever take one of a fixed set of
-values, you declare those values as individuals. The Music Ontology, for example, declares
-`Album` as a named individual of class `ReleaseType`:
+values, you declare those values as individuals. For example, an ontology may define a class Color and declare Red as one of its named individuals:
 
 ```turtle
-mo:Album  a  owl:NamedIndividual, mo:ReleaseType .
+ex:Red  a  owl:NamedIndividual, ex:Color .
 ```
 
 A knowledge graph then *uses* that individual as the value of a property:
 
 ```turtle
-ex:imagine  a  mo:MusicalWork ;
-            mo:release_type  mo:Album .
+ex:tshirt123  a  mo:TShirt ;
+            ex:hasColor  ex:Red .
 ```
 
-Here the individual `Album`, defined once in the ontology, serves as the enumerated release
-type of a musical work.
+Here the individual `Red`, defined once in the ontology, serves as one of the enumerated values of the `Color` class. This ensures that `hasColor` can only take one of the predefined color individuals (e.g. `Red`, `Blue`, `Green`), rather than arbitrary strings such as `"red"` or `"blue"`.
 
 **As a reasoner test fixture.** You can also add individuals to "unit-test" the ontology:
 run a reasoner over a handful of hand-written individuals and check that it infers what you
