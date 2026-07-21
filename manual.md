@@ -85,12 +85,12 @@ than to editing data — except the "schema" here is itself expressed as a graph
 
 A **graph** is nodes connected by edges. In a knowledge graph the nodes are *things*
 (San Francisco, Jane Doe, the USA) and the edges are *labelled relationships* between
-them (`Jane Doe —LOCATED_IN→ San Francisco`).
+them (`Jane Doe —isLocatedIn→ San Francisco`).
 
 The unit of information is a **triple**: subject, predicate, object.
 
 ```
-Jane Doe    LOCATED_IN    San Francisco
+Jane Doe    isLocatedIn    San Francisco
   ↑             ↑              ↑
 subject     predicate       object
 ```
@@ -101,7 +101,7 @@ to a pile of triples. The UI is a friendlier face over that.
 ### Ontology
 
 An **ontology** is the schema of the graph: the vocabulary and the rules. It declares
-that `Person` and `City` are kinds of things, that `LOCATED_IN` is a legal edge, and
+that `Person` and `City` are kinds of things, that `isLocatedIn` is a legal edge, and
 that it may run from a `Person` to a `City` (but not, say, from a `Year` to a `Year`).
 
 In relational terms, defining a class together with its properties is roughly a
@@ -167,20 +167,20 @@ surfaces:
 
 | Kind | Points from | Points to | Example |
 | --- | --- | --- | --- |
-| **Object property** | a class | a class | `LOCATED_IN`, `employs`, `manages` |
-| **Datatype property** | a class | a datatype (string, number, date) | `name`, `description`, `url` |
+| **Object property** | a class | a class | `isLocatedIn`, `employs`, `manages` |
+| **Datatype property** | a class | a datatype (string, number, date, etc.) | `name`, `description`, `url` |
 | **Annotation property** | a class | a class or a datatype | `rdfs:label`, `rdfs:comment` |
 
 These definitions live in the *ontology*, so they connect classes and datatypes, not
-concrete individuals. `Person —LOCATED_IN→ City` is a property definition; the fact
-`Jane Doe —LOCATED_IN→ San Francisco` is a single edge in the knowledge graph that obeys it.
+concrete individuals. `Person —isLocatedIn→ City` is a property definition; the fact
+`Jane Doe —isLocatedIn→ San Francisco` is a single edge in the knowledge graph that obeys it.
 
 Which kind you want is decided by the right-hand side. If the thing on the right is a class
 you would want to describe further — it has its own attributes, its own relationships — it
 is an **object property**. If it is just a value, a string or a number, it is a **datatype
 property**.
 
-`Person LOCATED_IN City` is an object property: a City is a real entity with its own facts.
+`Person -isLocatedIn→ City` is an object property: a City is a real entity with its own facts.
 `Person name` ranging over a string is a datatype property: the string is just a string.
 `employer` pointing at `Company` is an object property; `employerName` holding a string is a
 datatype property. The object property is usually what you want in a knowledge graph — the
@@ -196,7 +196,7 @@ Every object and datatype property has a **domain** and a **range**.
 - **Domain** = the class(es) the *subject* is allowed to be. The left side of the arrow.
 - **Range** = the class(es) the *object* is allowed to be. The right side of the arrow.
 
-In the sample ontology, `LOCATED_IN` has domain `{City, Country}` and range
+In the sample ontology, `isLocatedIn` has domain `{City, Country}` and range
 `{City, Person, Country}`. Read that as: *"the thing doing the locating can be a City or a
 Country; the thing it is located in can be a City, a Person, or a Country."*
 
@@ -277,7 +277,7 @@ RDF triples, hence the `.ttl` extension on every ontology in the library. It is 
 ```turtle
 :San_Francisco  rdf:type      :City .
 :San_Francisco  rdfs:label    "San Francisco"@en .
-:San_Francisco  :LOCATED_IN   :USA .
+:San_Francisco  :isLocatedIn   :USA .
 ```
 
 You never have to write Turtle to use the editor. But everything you do in the UI is
@@ -289,7 +289,7 @@ then open **View TTL** from the ontology card's `...` menu and read the source.
 
 ### Where WebProtégé fits in
 
-Perseus's editor is modelled on **WebProtégé**, the browser version of Protégé, the
+Perseus's editor is modeled on **WebProtégé**, the browser version of Protégé, the
 open-source ontology editor from Stanford. The mental model transfers directly: the same
 Classes / Properties / Individuals split, the same domain/range semantics, the same
 annotation-based documentation, the same commit-with-a-message revision history.
@@ -622,10 +622,7 @@ heading, then set its domain and range. A property with an empty domain and rang
 but unconstrained, and will match far more loosely than you want. Start narrow and widen
 later.
 
-> Naming convention: the generated ontologies use two styles — `SCREAMING_SNAKE_CASE` for
-> object properties (`LOCATED_IN`, `ASSOCIATED_WITH`) and lowerCamelCase or plain words for
-> datatype properties (`name`, `url`, `has job title`). Neither is required. Pick one
-> convention per ontology and hold to it.
+> Naming convention: the generated ontologies uses lowerCamelCase for object and data properties (`isLocatedIn`, `url`, `jobTitle`).
 
 ---
 
@@ -669,9 +666,9 @@ the identically-named section on a *class*:
 Each row is two dropdowns: pick the **property** on the left, then **Pick an individual…**
 on the right.
 
-![The individual `Jane Doe`: typed as a `Person`, asserted `LOCATED_IN` `San Francisco`](manual_assets/fig-13-individual-detail.png)
+![The individual `Jane Doe`: typed as a `Person`, asserted `isLocatedIn` `San Francisco`](manual_assets/fig-13-individual-detail.png)
 
-`Jane Doe` + `LOCATED_IN` + `San Francisco` creates exactly one triple:
+`Jane Doe` + `isLocatedIn` + `San Francisco` creates exactly one triple:
 
 ```turtle
 :Jane_Doe :LOCATED_IN :San_Francisco .
@@ -706,7 +703,7 @@ a message, and you can browse back through them.
 ### Save with a commit message
 
 Click **Save** (or `⌘S`). A **Save ontology** dialog appears with a **Commit message**
-field. Type a short description of what changed — *"Added Country"*, *"People-[LOCATED_IN]→City"* —
+field. Type a short description of what changed — *"Added Country"*, *"People-[isLocatedIn]→City"* —
 and click **Save**.
 
 ![The Save ontology dialog. The commit message is optional — fill it in anyway](manual_assets/fig-14-save-dialog.png)
@@ -769,7 +766,7 @@ in six steps. Open any ontology you have; a generated one from **Build Ontology*
 well, since it already has classes and properties to build on.
 
 The walkthrough below uses a small ontology whose classes include `City` and `Person` and
-whose object properties include `LOCATED_IN`. Substitute your own names as you go: the
+whose object properties include `isLocatedIn`. Substitute your own names as you go: the
 shape of each step is the same whatever your domain is. The goal is to add a class that is
 missing, wire it into an existing relationship, and then state two facts using it.
 
@@ -781,9 +778,9 @@ appears. Type a name over the heading — here, `Country`. Perseus fills in
 sentence explaining what counts as a Country in this domain.
 
 **3. Let the new class participate in a relationship.** Properties tab → **Object** →
-select an existing property, here `LOCATED_IN`. Under **Range**, click
+select an existing property, here `isLocatedIn`. Under **Range**, click
 **Add a range class…** and add `Country`. Its range becomes `{City, Person, Country}` and
-its domain is `{City, Country}` — so a City may now be `LOCATED_IN` a Country.
+its domain is `{City, Country}` — so a City may now be `isLocatedIn` a Country.
 
 ![`LOCATED_IN` after adding `Country` to its range](manual_assets/fig-18-range-country.png)
 
@@ -794,8 +791,8 @@ its domain is `{City, Country}` — so a City may now be `LOCATED_IN` a Country.
 **5. Assert the facts.** Assuming an individual `San Francisco` of class `City` already
 exists:
 
-- Select `Jane Doe` → **Relationships** → property `LOCATED_IN`, individual `San Francisco`.
-- Select `San Francisco` → **Relationships** → property `LOCATED_IN`, individual `USA`.
+- Select `Jane Doe` → **Relationships** → property `isLocatedIn`, individual `San Francisco`.
+- Select `San Francisco` → **Relationships** → property `isLocatedIn`, individual `USA`.
 
 **6. Commit.** **Save** → commit message *"Added Country"* → **Save**. The version chip
 changes to a fresh hash carrying the **Latest** badge, and the new commit is at the top of
